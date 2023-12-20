@@ -47,11 +47,11 @@ const Customer:React.FC = ()=>{
         setCustomers(response.data);
     }
 
-    const deleteCustomer= async (id)=>{
+    const deleteCustomer= async (id :string)=>{
         await axios.delete('http://localhost:3000/api/v1/customers/delete-by-id/'+id);
     }
 
-    const loadModal= async (id)=>{
+    const loadModal= async (id:string)=>{
         const customer = await axios.get('http://localhost:3000/api/v1/customers/find-by-id/'+id);
         console.log(customer.data)
         setSelectedCustomerId(customer.data._id)
@@ -164,6 +164,29 @@ const Customer:React.FC = ()=>{
                             <button className='btn btn-outline-success btn-sm'>Update</button>
                         </td>
                     </tr>
+
+                    {customers.map((customer, index)=>
+                        <tr key={index}>
+                            <td>#{index}</td>
+                            <td>{customer.name}</td>
+                            <td>{customer.address}</td>
+                            <td>{customer.salary}</td>
+                            <td>
+                                <button
+                                    onClick={()=>{
+                                        if (confirm('are you sure?')){
+                                            deleteCustomer(customer._id)
+                                        }}}
+                                    className='btn btn-outline-danger btn-sm'>Delete</button>
+                            </td>
+                            <td>
+                                <button onClick={()=>{
+                                    loadModal(customer._id);
+                                }} className='btn btn-outline-success btn-sm'>Update</button>
+                            </td>
+                        </tr>
+                    )}
+
                     </tbody>
                 </table>
 
