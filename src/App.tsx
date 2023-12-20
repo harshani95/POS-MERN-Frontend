@@ -13,7 +13,7 @@ function App() {
                 <nav className="navbar navbar-expand-lg bg-body-tertiary">
                     <div className="container-fluid">
                         <div className="navbar-brand">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Wattpad_logo.png/2560px-Wattpad_logo.png"
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRhowJ0cgtGyC-KrCESr6LIws0f7zQuIzex4BoM4bBUJGDCrIpjUEhXiJllo0a6FyxTMc&usqp=CAU"
                                  alt="" className='logo'/>
                         </div>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
