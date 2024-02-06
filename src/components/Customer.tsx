@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Modal} from "react-bootstrap";
-import axios from 'axios';
+import AxiosInstance from '../config/axiosInstance.ts';
 
 interface Customer{
     _id:string,
@@ -31,7 +31,7 @@ const Customer:React.FC = ()=>{
     const updateCustomer= async ()=>{
         try{
 
-            await axios.put('http://localhost:3000/api/v1/customers/update/'+selectedCustomerId,{
+            await AxiosInstance.put('/customers/update/'+selectedCustomerId,{
                 name:updateName,address:updateAddress,salary:updateSalary
             });
             setModalState(false);
@@ -43,16 +43,16 @@ const Customer:React.FC = ()=>{
     }
 
     const findAllCustomers= async ()=>{
-        const response = await axios.get('http://localhost:3000/api/v1/customers/find-all?searchText=&page=1&size=10');
+        const response = await AxiosInstance.get('/customers/find-all?searchText=&page=1&size=10');
         setCustomers(response.data);
     }
 
     const deleteCustomer= async (id :string)=>{
-        await axios.delete('http://localhost:3000/api/v1/customers/delete-by-id/'+id);
+        await AxiosInstance.delete('/customers/delete-by-id/'+id);
     }
 
     const loadModal= async (id:string)=>{
-        const customer = await axios.get('http://localhost:3000/api/v1/customers/find-by-id/'+id);
+        const customer = await AxiosInstance.get('/customers/find-by-id/'+id);
         console.log(customer.data)
         setSelectedCustomerId(customer.data._id)
         setUpdateName(customer.data.name)
@@ -65,7 +65,7 @@ const Customer:React.FC = ()=>{
     const saveCustomer= async ()=>{
         try{
 
-            const response = await axios.post('http://localhost:3000/api/v1/customers/create',{
+            const response = await AxiosInstance.post('/customers/create',{
                 name,address,salary
             });
             console.log(response);
@@ -134,37 +134,6 @@ const Customer:React.FC = ()=>{
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>#1001</td>
-                        <td>Nimal Bnadara</td>
-                        <td>Colombo City</td>
-                        <td>25000.00</td>
-                        <td>
-                            <button onClick={()=>{
-                                if (confirm('are you sure?')){
-                                    deleteCustomer(customer._id)
-                                }}} className='btn btn-outline-danger btn-sm'>Delete</button>
-                        </td>
-                        <td>
-                            <button
-                                onClick={()=>{
-                                    loadModal(customer._id);
-                                }}className='btn btn-outline-success btn-sm'>Update</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>#1001</td>
-                        <td>Nimal Bnadara</td>
-                        <td>Colombo City</td>
-                        <td>25000.00</td>
-                        <td>
-                            <button className='btn btn-outline-danger btn-sm'>Delete</button>
-                        </td>
-                        <td>
-                            <button className='btn btn-outline-success btn-sm'>Update</button>
-                        </td>
-                    </tr>
-
                     {customers.map((customer, index)=>
                         <tr key={index}>
                             <td>#{index}</td>
