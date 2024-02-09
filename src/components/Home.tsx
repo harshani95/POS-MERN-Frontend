@@ -6,11 +6,11 @@ import React, {useEffect, useState} from "react";
 import Product from "./Product.tsx";
 
 const  Home:React.FC = ()=>{
-    const [products, setProducts]=useState<Product[]>([]);
-    const[productCount,setProductCount]=useState<number>();
-    const[orderCount,setOrderCount]=useState<number>();
-    const[customerCount,setCoustomerCount]=useState<number>();
-    const[income,setIncome]=useState<number>();
+    const[products, setProducts]=useState<Product[]>([]);
+    const[productCount,setProductCount]=useState<number>(0);
+    const[orderCount,setOrderCount]=useState<number>(0);
+    const[customerCount,setCoustomerCount]=useState<number>(0);
+    const[income,setIncome]=useState<number>(0);
 
     useEffect(()=>{
         findAllProducts();
