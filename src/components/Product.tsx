@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, {ChangeEvent, useEffect, useState} from "react";
 import AxiosInstance from '../config/axiosInstance.ts';
 import {storage} from '../config/firebase.ts';
@@ -21,7 +22,10 @@ const Product:React.FC = ()=>{
     const [qtyOnHand,setQtyOnHand]=useState<number | ''>('');
 
     const handleFile = async (event:React.ChangeEvent<HTMLInputElement>)=>{
-        setImage(event.target.files[0]);
+        //setImage(event.target.files[0]);
+        if (event.target.files && event.target.files.length > 0) {
+            setImage(event.target.files[0]);
+        }
     }
 
     useEffect(()=>{
@@ -94,31 +98,31 @@ return (
              <div className="col-12 col-sm-6 col-md-4" style={styleObj}>
                  <div className="form-group">
                      <label htmlFor="productName">Product Name</label>
-                     <input value={name} type="text" className='form-control' id='productName'/>
+                     <input value={name} type="text" onChange={(e)=>setName(e.target.value)} className='form-control' id='productName'/>
                  </div>
              </div>
              <div className="col-12 col-sm-6 col-md-4" style={styleObj}>
                  <div className="form-group">
                      <label htmlFor="price">Unit Price</label>
-                     <input value={unitPrice} type="number" className='form-control' id='price'/>
+                     <input value={unitPrice} type="number" onChange={(e)=>setUnitPrice(parseFloat(e.target.value))} className='form-control' id='price'/>
                  </div>
              </div>
              <div className="col-12 col-sm-6 col-md-4" style={styleObj}>
                  <div className="form-group">
                      <label htmlFor="qty">QTY On Hand</label>
-                     <input value={qtyOnHand} type="number" className='form-control' id='qty'/>
+                     <input value={qtyOnHand} type="number"  onChange={(e)=>setQtyOnHand(parseFloat(e.target.value))} className='form-control' id='qty'/>
                  </div>
              </div>
              <div className="col-12 col-sm-6 col-md-4" style={styleObj}>
                  <div className="form-group">
                      <label htmlFor="image">Product Image</label>
-                     <input value={handleFile} type="file" className='form-control' id='image'/>
+                     <input onChange={handleFile} type="file" className='form-control' id='image'/>
                  </div>
              </div>
              <div className="col-12">
                  <div className="form-group">
                      <label htmlFor="description">Description</label>
-                     <textarea value={description} rows={3} className='form-control' id='description'/>
+                     <textarea value={description} rows={3} onChange={(e)=>setDescription(e.target.value)}   className='form-control' id='description'/>
                  </div>
              </div>
 
