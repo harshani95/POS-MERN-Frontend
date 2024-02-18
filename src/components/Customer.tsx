@@ -58,13 +58,12 @@ const Customer:React.FC = ()=>{
         setUpdateName(customer.data.name)
         setUpdateAddress(customer.data.address)
         setUpdateSalary(parseFloat(customer.data.salary))
-
+        
         setModalState(true);
     }
 
     const saveCustomer= async ()=>{
         try{
-
             const response = await AxiosInstance.post('/customers/create',{
                 name,address,salary
             });
@@ -125,7 +124,7 @@ const Customer:React.FC = ()=>{
                 <table className='table table-hover table-bordered'>
                     <thead>
                     <tr>
-                        <th>#Id</th>
+                        <th>ID</th>
                         <th>Customer Name</th>
                         <th>Address</th>
                         <th>Salary</th>
@@ -136,7 +135,7 @@ const Customer:React.FC = ()=>{
                     <tbody>
                     {customers.map((customer, index)=>
                         <tr key={index}>
-                            <td>#{index}</td>
+                            <td>{index}</td>
                             <td>{customer.name}</td>
                             <td>{customer.address}</td>
                             <td>{customer.salary}</td>
