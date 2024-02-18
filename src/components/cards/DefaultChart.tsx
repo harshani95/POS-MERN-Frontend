@@ -1,46 +1,41 @@
-import {AxisOptions, Chart} from 'react-charts';
-import React from "react";
+import { Line } from 'react-chartjs-2';
+import { defaults } from "chart.js/auto";
+defaults.responsive = true;
+defaults.plugins.title.display = true;
+defaults.plugins.title.align = "start";
+defaults.plugins.title.color = "black";
 
-type MyDatum = { date: Date, stars: number }
 
-function DefaultChart() {
+const  DefaultChart=()=> {
 
-    const data = [
-        {
-            label: 'React Charts',
-            data: [
-                {
-                    date: new Date(),
-                    stars: 23467238,
-                },
-            ],
-        },
-    ]
-
-    const primaryAxis = React.useMemo(
-        (): AxisOptions<MyDatum> => ({
-            getValue: datum => datum.date,
-        }),
-        []
-    )
-
-    const secondaryAxes = React.useMemo(
-        (): AxisOptions<MyDatum>[] => [
+    const data={
+        labels:["January", "Febuary", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"],
+        datasets:[
             {
-                getValue: datum => datum.stars,
-            },
-        ],
-        []
-    )
+                label:'data',
+                data:[50,23,45,76,45,89,76,34,67],
+                fill:false
+            }
+        ]
+    }
+    const options={
+        scales:{
+            y:{
+                beginAtZero:true
+            }
+        }
+    }
 
     return(
-        <Chart
-            options={{
-                data,
-                primaryAxis,
-                secondaryAxes,
-            }}
-        />
+       <>
+          <div>
+              <Line
+                  options={options}
+                  data={data}
+              />
+          </div>
+       </>
     )
 }
 export default DefaultChart;
