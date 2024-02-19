@@ -8,7 +8,7 @@ const instance:AxiosInstance= axios.create({
 instance.interceptors.request.use(
     (config)=>{
 
-        let token = document.cookie.split('; ')
+        let token:string| null = document.cookie.split('; ')
             .find(record=>record.startsWith('token=')) || null;
         token = token?.split('=')[1];
         config.headers.Authorization=token;
