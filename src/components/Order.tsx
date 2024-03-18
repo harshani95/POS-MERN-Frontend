@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import Customer from "./Customer.tsx";
 import AxiosInstance from '../config/axiosInstance.ts';
 import Product from "./Product.tsx";
+import '../App.css';
 
 interface Cart{
     _id:string | undefined,
@@ -168,10 +169,10 @@ const Order:React.FC = ()=>{
                         </div>
                     </div>
                 </div>
-                <hr/>
+                <hr/><br />
                 <div className="row">
-                    <div className="col-12">
-                        <button className='btn btn-primary col-12'
+                    <div className="col-6">
+                        <button className='btn btn-primary col-4'
                         onClick={()=>{
 
                             const cartProduct:Cart= {
@@ -190,10 +191,10 @@ const Order:React.FC = ()=>{
                 <div className="row">
                     <div className="col-12">
 
-                        <table className='table table-hover table-bordered'>
+                        <table className='table table-hover table-bordered table-danger table-border'>
                             <thead>
                             <tr>
-                                <th>#ID</th>
+                                <th>ID</th>
                                 <th>Product Name</th>
                                 <th>Unit Price</th>
                                 <th>QTY</th>
@@ -204,7 +205,7 @@ const Order:React.FC = ()=>{
                             <tbody>
                             {cart.map((data, index)=>(
                             <tr key={index}>
-                                 <td>#{data._id}</td>
+                                 <td>{data._id}</td>
                                     <td>{data.description}</td>
                                     <td>{data.unitPrice}</td>
                                     <td>{data.qty}</td>
@@ -227,7 +228,7 @@ const Order:React.FC = ()=>{
                                 </h1>
                             </div>
                             <div className="place-order-button-context">
-                                <button className='btn btn-primary'onClick={async ()=>{await AxiosInstance.post('/orders/create/',{
+                                <button className='btn btn-success'onClick={async ()=>{await AxiosInstance.post('/orders/create/',{
                                     date:new Date(),
                                     customerDetails:selectedCustomer,
                                     totalCost:130,

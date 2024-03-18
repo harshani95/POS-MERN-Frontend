@@ -1,15 +1,13 @@
 import React, {useState} from "react";
 import AxiosInstance from '../config/axiosInstance.ts';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 
 const Signup:React.FC = ()=>{
     const [fullName, setFullName]=useState('');
     const [email, setEmail]=useState('');
     const [password, setPassword]=useState('');
-
-
-
+    const navigate = useNavigate();
 
     const signup= async ()=>{
         try{
@@ -21,6 +19,7 @@ const Signup:React.FC = ()=>{
             setEmail('');
             setFullName('');
             setPassword('');
+            navigate('/');
 
         }catch (e){
             console.log(e)
@@ -28,7 +27,7 @@ const Signup:React.FC = ()=>{
     }
     return(
         <>
-            <br/>
+            <br/><br />
             <div className="container">
                 <div className="row">
                     <div className="col-4">
@@ -54,8 +53,8 @@ const Signup:React.FC = ()=>{
                                    onChange={(e)=>{setPassword(e.target.value)}}
                                    className='form-control' placeholder='Password here'/>
                         </div>
-                    </div>
-                    <div className="col-12">
+                    </div><br />
+                    <div className="col-6 btn-center">
                         <br/>
                         <button className='btn btn-primary col-12' onClick={signup}>Register Now</button>
                         <br/>

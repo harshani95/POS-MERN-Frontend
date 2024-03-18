@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Modal} from "react-bootstrap";
 import AxiosInstance from '../config/axiosInstance.ts';
+import '../App.css';
 
 interface Customer{
     _id:string,
@@ -44,6 +45,8 @@ const Customer:React.FC = ()=>{
 
     const findAllCustomers= async ()=>{
         const response = await AxiosInstance.get('/customers/find-all?searchText=&page=1&size=10');
+        console.log(response.data);
+        
         setCustomers(response.data);
     }
 
@@ -105,11 +108,11 @@ const Customer:React.FC = ()=>{
         </div>
         <br/>
         <div className="row">
-            <div className="col-12">
-                <button onClick={saveCustomer} className='btn btn-primary col-12'>Save Customer</button>
+            <div className="col-6">
+                <button onClick={saveCustomer} className='btn btn-primary col-4'>Save Customer</button>
             </div>
-        </div>
-        <hr/>
+            </div>
+        <hr/><br />
         <div className="row">
             <div className="col-12">
                 <form className='col-12'>
@@ -121,7 +124,7 @@ const Customer:React.FC = ()=>{
         <div className="row">
             <div className="col-12">
 
-                <table className='table table-hover table-bordered'>
+                <table className='table table-hover table-bordered table-primary table-border'>
                     <thead>
                     <tr>
                         <th>ID</th>

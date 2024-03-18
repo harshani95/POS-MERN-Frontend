@@ -1,7 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, {ChangeEvent, useEffect, useState} from "react";
+
+import React, { useEffect, useState} from "react";
 import AxiosInstance from '../config/axiosInstance.ts';
 import {storage} from '../config/firebase.ts';
+import '../App.css';
 
 interface Product{
     _id:string,
@@ -129,11 +130,11 @@ return (
          </div>
          <br/>
          <div className="row">
-             <div className="col-12">
-                 <button className='btn btn-primary col-12' onClick={saveProduct}>Save Product</button>
+             <div className="col-6">
+                 <button className='btn btn-primary col-4' onClick={saveProduct}>Save Product</button>
              </div>
          </div>
-         <hr/>
+         <hr/><br />
          <div className="row">
              <div className="col-12">
                  <form className='col-12'>
@@ -145,10 +146,10 @@ return (
          <div className="row">
              <div className="col-12">
 
-                 <table className='table table-hover table-bordered'>
+                 <table className='table table-hover table-bordered table-info table-border'>
                      <thead>
                      <tr>
-                         <th>#ID</th>
+                         <th>ID</th>
                          <th>Product Name</th>
                          <th>QTY On Hand</th>
                          <th>Unit Price</th>

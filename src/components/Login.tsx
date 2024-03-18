@@ -36,7 +36,7 @@ const Login:React.FC = ()=>{
 
     return(
         <>
-            <br/>
+            <br/><br />
             <div className="container">
                 <div className="row">
                     <div className="col-6">
@@ -54,8 +54,8 @@ const Login:React.FC = ()=>{
                                    onChange={(e)=>{setPassword(e.target.value)}}
                                    className='form-control' placeholder='Password here'/>
                         </div>
-                    </div>
-                    <div className="col-12">
+                    </div><br />
+                    <div className="col-6 btn-center">
                         <br/>
                         <button className='btn btn-primary col-12' onClick={login}>Login</button>
                         <br/>

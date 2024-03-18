@@ -5,7 +5,6 @@ import Home from "./components/Home.tsx";
 import Customer from "./components/Customer.tsx";
 import Product from "./components/Product.tsx";
 import Order from "./components/Order.tsx";
-import Calculator from './components/Calculator.tsx';
 import Signup from './components/Signup.tsx';
 import Login from './components/Login.tsx';
 
@@ -40,9 +39,6 @@ function App() {
                                 <li className="nav-item">
                                     <Link className="nav-link"  to='/login'>Login</Link>
                                 </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link"  to='/calc'>Calculator</Link>
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -54,7 +50,6 @@ function App() {
                     <Route path='/orders' element={<Order/>}/>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/signup' element={<Signup/>}/>
-                    <Route path='/calc' element={<Calculator/>}/>
                 </Routes>
             </div>
         </Router>
