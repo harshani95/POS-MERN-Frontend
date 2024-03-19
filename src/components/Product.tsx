@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState} from "react";
+import {Modal} from "react-bootstrap";
 import AxiosInstance from '../config/axiosInstance.ts';
 import {storage} from '../config/firebase.ts';
 import '../App.css';
@@ -15,12 +16,23 @@ interface Product{
 
 const Product:React.FC = ()=>{
     const [products, setProducts]=useState<Product[]>([]);
+    const [loadModalState, setLoadModalState]=useState<boolean>(false);
+    const [viewModalState, setViewModalState]=useState<boolean>(false);
+
     const [image, setImage]=useState<File | null>(null);
-    
     const [name,setName]=useState('');
     const [description,setDescription]=useState('');
     const [unitPrice,setUnitPrice]=useState<number | ''>('');
     const [qtyOnHand,setQtyOnHand]=useState<number | ''>('');
+
+    const [selectedProductId,setSelectedProductId]=useState('');
+    const [updateName,setUpdateName]=useState('');
+    const [updateDescription,setUpdateDescription]=useState('');
+    const [updateImage,setUpdateImage]=useState('');
+    const [updateQtyOnHand,setUpdateQtyOnHand]=useState<number | ''>('');
+    const [updateUnitPrice,setUpdateUnitPrice]=useState<number | ''>('');
+    
+    
 
     const handleFile = async (event:React.ChangeEvent<HTMLInputElement>)=>{
         //setImage(event.target.files[0]);
@@ -33,19 +45,23 @@ const Product:React.FC = ()=>{
         findAllProducts();
     }, [])
 
-    // const updateProduct= async ()=>{
-    //     try{
-    //         await axios.put('http://localhost:3000/api/v1/customers/update/'+selectedCustomerId,{
-    //             name:updateName,
-    //             address:updateAddress,
-    //             salary:updateSalary
-    //         });
-    //         setModalState(false);
-    //         findAllCustomers();
-    //     }catch (e){
-    //         console.log(e)
-    //     }
-    // }
+    const updateProduct= async ()=>{
+        try{ 
+             await AxiosInstance.put('http://localhost:3000/api/v1/products/update/'+selectedProductId,{
+            name:updateName,
+            description:updateDescription,
+            image:updateImage,
+            qtyOnHand:updateQtyOnHand,
+            unitPrice:updateUnitPrice
+            
+        });
+        setModalState(false);
+        findAllProducts();
+
+    }catch (e){
+            console.log(e)
+        }    
+    }
 
     const findAllProducts= async ()=>{
         const response = await AxiosInstance.get('/products/find-all?searchText=&page=1&size=10');
@@ -56,6 +72,33 @@ const Product:React.FC = ()=>{
         await AxiosInstance.delete('/products/delete-by-id/'+id);
         findAllProducts();
     }
+
+    const loadModal= async (id:string)=>{
+        const product = await AxiosInstance.get('/products/find-by-id/'+id);
+        console.log(product.data)
+        setSelectedProductId(product.data._id)
+        setUpdateName(product.data.name)
+        setUpdateDescription(product.data.description)
+        setUpdateImage(product.data.image)
+        setUpdateQtyOnHand(parseFloat(product.data.qtyOnHand))
+        setUpdateUnitPrice(parseFloat(product.data.unitPrice))
+        
+        setLoadModalState(true);
+    }
+
+    const viewModal= async (id:string)=>{
+        const product = await AxiosInstance.get('/products/find-by-id/'+id);
+        console.log(product.data)
+        setSelectedProductId(product.data._id)
+        setName(product.data.name)
+        setDescription(product.data.description)
+        setQtyOnHand(parseFloat(product.data.qtyOnHand))
+        setUnitPrice(parseFloat(product.data.unitPrice))
+        
+        setViewModalState(true);
+    }
+
+ 
 
     const saveProduct=async ()=>{
         let imageUrl='https://cdn.4imprint.com/qtz/homepage/categories/images21/drinkware0222.jpg';
@@ -123,7 +166,7 @@ return (
              <div className="col-12">
                  <div className="form-group">
                      <label htmlFor="description">Description</label>
-                     <textarea value={description} rows={3} onChange={(e)=>setDescription(e.target.value)}   className='form-control' id='description'/>
+                     <textarea value={description} rows={2} onChange={(e)=>setDescription(e.target.value)} className='form-control' id='description'/>
                  </div>
              </div>
 
@@ -131,7 +174,7 @@ return (
          <br/>
          <div className="row">
              <div className="col-6">
-                 <button className='btn btn-primary col-4' onClick={saveProduct}>Save Product</button>
+                 <button className='btn btn-primary col-6' onClick={saveProduct}>Save Product</button>
              </div>
          </div>
          <hr/><br />
@@ -166,17 +209,22 @@ return (
                          <td>{product.qtyOnHand}</td>
                          <td>{product.unitPrice}</td>
                          <td>
-                             <button className='btn btn-outline-danger btn-sm'
+                             <button className='btn btn-danger btn-sm'
                              onClick={()=>{
                                 if(confirm('are you sure?')){
                                     deleteProduct(product._id)
                             } }}>Delete</button>
                          </td>
                          <td>
-                             <button className='btn btn-outline-success btn-sm'  onClick={()=>alert('need to modify!')}>Update</button>
+                             <button className='btn btn-success btn-sm'  
+                             onClick={()=>{
+                                    loadModal(product._id);
+                                }}>Update</button>
                          </td>
                          <td>
-                             <button className='btn btn-outline-info btn-sm'  onClick={()=>alert('need to modify!')}>View</button>
+                             <button className='btn btn-info btn-sm'  
+                             onClick={
+                                ()=>{viewModal(product._id)}}>View</button>
                          </td>
                      </tr>
                          )}
@@ -186,6 +234,135 @@ return (
              </div>
          </div>
      </div>
+
+     {/*==============================*/}
+
+        <Modal show={loadModalState}>
+
+        <div className='p-4'>
+            <h2 className="text-center heading">Update Product</h2> <br />
+
+            <div className="mb-3 row">
+            <label className="col-sm-4 col-form-label">Product Name</label>
+                <div className="col-sm-8">
+                <input type="text" defaultValue={updateName}
+                   onChange={(e)=>setUpdateName(e.target.value)}
+                   className='form-control'/> 
+                </div>
+            </div>
+            <br />
+
+            <div className="mb-3 row">
+            <label className="col-sm-4 col-form-label">Description</label>
+                <div className="col-sm-8">
+                <input type="text" defaultValue={updateDescription} className='form-control'
+                onChange={(e)=>setUpdateDescription(e.target.value)}/>
+                </div>
+            </div>
+            <br />
+
+            <div className="mb-3 row">
+            <label className="col-sm-4 col-form-label">Image</label>
+                <div className="col-sm-8">
+                <input onChange={handleFile} type="file" className='form-control' id='image'/>
+                </div>
+            </div>
+            <br />
+
+            <div className="mb-3 row">
+            <label className="col-sm-4 col-form-label">Qty On Hand</label>
+                <div className="col-sm-8">
+                <input type="text" defaultValue={updateQtyOnHand}
+                   onChange={(e)=>setUpdateQtyOnHand(parseInt(e.target.value))}
+                   className='form-control'/>
+                </div>
+            </div>
+            <br />
+
+            <div className="mb-3 row">
+            <label className="col-sm-4 col-form-label">Unit Price</label>
+                <div className="col-sm-8">
+                <input type="text" defaultValue={updateUnitPrice}
+                   onChange={(e)=>setUpdateUnitPrice(parseFloat(e.target.value))}
+                   className='form-control'/>
+                </div>
+            </div>
+            <br />
+
+    
+    <div className="col-12">
+        <button type='button' className='btn-success btn col-12'
+                onClick={()=>updateProduct()}
+        >Update Product</button>
+        <br/>
+        <br/>
+        <button type='button' className='btn-warning btn col-12' onClick={()=>setLoadModalState(false)}>Close Modal</button>
+    </div>
+
+</div>
+
+        </Modal>
+
+
+    {/*==============================*/}
+
+    {/*==============================*/}
+
+    <Modal show={viewModalState}>
+    <div className="p-4" tabIndex={-1}>
+    <div className="modal-dialog">
+        <div className="modal-content">
+         <div className="modal-header">
+            <h5 className="modal-title">Product Details</h5>
+             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+        <div className="modal-body">
+        <div className="mb-3 row">
+        <label className="col-sm-4 col-form-label">Product Name</label>
+            <div className="col-sm-8">
+            <input type="text" defaultValue={name}
+               onChange={(e)=>setName(e.target.value)}
+               className='form-control'/> 
+            </div>
+        </div>
+        <br />
+        <div className="mb-3 row">
+        <label className="col-sm-4 col-form-label">Description</label>
+            <div className="col-sm-8">
+            <input type="text" defaultValue={description} className='form-control'
+            onChange={(e)=>setDescription(e.target.value)}/>
+            </div>
+        </div>
+        <br />
+        <div className="mb-3 row">
+        <label className="col-sm-4 col-form-label">Qty On Hand</label>
+            <div className="col-sm-8">
+            <input type="text" defaultValue={qtyOnHand}
+               onChange={(e)=>setQtyOnHand(parseInt(e.target.value))}
+               className='form-control'/>
+            </div>
+        </div>
+        <br />
+        <div className="mb-3 row">
+        <label className="col-sm-4 col-form-label">Unit Price</label>
+            <div className="col-sm-8">
+            <input type="text" defaultValue={unitPrice}
+               onChange={(e)=>setUnitPrice(parseFloat(e.target.value))}
+               className='form-control'/>
+            </div>
+        </div>
+        <br />
+        </div>
+        <div className="modal-footer">
+             <button type="button" className="btn btn-danger"  onClick={()=>setViewModalState(false)}>Close</button>
+        </div>
+        </div>
+    </div>
+</div>
+</Modal>
+
+    {/*==============================*/}
+
 
  </>
 )
