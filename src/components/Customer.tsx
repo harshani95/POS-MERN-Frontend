@@ -44,9 +44,7 @@ const Customer:React.FC = ()=>{
     }
 
     const findAllCustomers= async ()=>{
-        const response = await AxiosInstance.get('/customers/find-all?searchText=&page=1&size=10');
-        console.log(response.data);
-        
+        const response = await AxiosInstance.get('/customers/find-all?searchText=&page=1&size=10')
         setCustomers(response.data);
     }
 
@@ -109,7 +107,7 @@ const Customer:React.FC = ()=>{
         <br/>
         <div className="row">
             <div className="col-6">
-                <button onClick={saveCustomer} className='btn btn-primary col-4'>Save Customer</button>
+                <button onClick={saveCustomer} className='btn btn-primary col-6'>Save Customer</button>
             </div>
             </div>
         <hr/><br />
@@ -148,12 +146,12 @@ const Customer:React.FC = ()=>{
                                         if (confirm('are you sure?')){
                                             deleteCustomer(customer._id)
                                         }}}
-                                    className='btn btn-outline-danger btn-sm'>Delete</button>
+                                    className='btn btn-danger btn-sm center'>Delete</button>
                             </td>
                             <td>
                                 <button onClick={()=>{
                                     loadModal(customer._id);
-                                }} className='btn btn-outline-success btn-sm'>Update</button>
+                                }} className='btn btn-success btn-sm '>Update</button>
                             </td>
                         </tr>
                     )}
@@ -170,8 +168,7 @@ const Customer:React.FC = ()=>{
             <Modal show={modalState}>
 
                 <div className='p-4'>
-                    <h2>Update Customer</h2>
-                    <hr/>
+                    <h2 className="text-center heading">Update Customer</h2> <br />
 
                     <div className="col-12">
                         <div className="form-group">
@@ -203,7 +200,7 @@ const Customer:React.FC = ()=>{
                         >Update Customer</button>
                         <br/>
                         <br/>
-                        <button type='button' className='btn-secondary btn col-12' onClick={()=>setModalState(false)}>Close Modal</button>
+                        <button type='button' className='btn-warning btn col-12' onClick={()=>setModalState(false)}>Close Modal</button>
                     </div>
 
                 </div>

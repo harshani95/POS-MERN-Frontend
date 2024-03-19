@@ -13,4 +13,16 @@
 .nav-item .nav-link:hover {
     color:#B53471;
   }
-  
+
+.heading{
+    color: #40739e;
+    text-decoration: underline;
+}
+
+/* .center{
+    justify-content: center; 
+    border: 1px solid red;
+    text-align: center;  
+    vertical-align: middle; 
+}
+   */
