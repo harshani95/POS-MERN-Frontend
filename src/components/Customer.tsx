@@ -92,7 +92,8 @@ const Customer:React.FC = ()=>{
             setCustomers(response.data);
         } catch (error) {
             console.error('Error searching customers:', error);
-    };
+    }
+}
 
 
     return (
@@ -133,8 +134,6 @@ const Customer:React.FC = ()=>{
                 <button className="btn btn-outline-success" type="submit">Search</button>
         </form><br />
 
-
-        <br/>
         <div className="row">
             <div className="col-12">
 
