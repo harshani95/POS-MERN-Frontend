@@ -14,6 +14,7 @@ const Customer:React.FC = ()=>{
 
     const [customers, setCustomers]=useState<Customer[]>([])
     const [modalState, setModalState]=useState<boolean>(false);
+    const [searchText,setSearchText] = useState("");
 
     const [name,setName]=useState('');
     const [address,setAddress]=useState('');
@@ -26,7 +27,7 @@ const Customer:React.FC = ()=>{
 
     useEffect(()=>{
         findAllCustomers();
-    }, [])
+    }, [searchText]);
 
 
     const updateCustomer= async ()=>{
@@ -79,6 +80,21 @@ const Customer:React.FC = ()=>{
         }
     }
 
+    // const searchCustomer = (event: { preventDefault: () => void; }) => {
+    //     event.preventDefault();
+    //     findAllCustomers();   
+    // };
+
+    const searchCustomer = async (event: { preventDefault: () => void; }) => {
+        event.preventDefault();
+        try {
+            const response = await AxiosInstance.get(`/customers/find-all?searchText=${searchText}&page=1&size=10`);
+            setCustomers(response.data);
+        } catch (error) {
+            console.error('Error searching customers:', error);
+    };
+
+
     return (
         <>
         <br/>
@@ -111,13 +127,13 @@ const Customer:React.FC = ()=>{
             </div>
             </div>
         <hr/><br />
-        <div className="row">
-            <div className="col-12">
-                <form className='col-12'>
-                    <input type="search" className='form-control' placeholder='Search Customers here'/>
-                </form>
-            </div>
-        </div>
+        
+        <form className="d-flex" role="search" onSubmit={searchCustomer}>
+                <input className="form-control me-2"  placeholder="Search Customer here" value={ searchText } onChange={(e) => setSearchText(e.target.value)} type="search" aria-label="Search"/>
+                <button className="btn btn-outline-success" type="submit">Search</button>
+        </form><br />
+
+
         <br/>
         <div className="row">
             <div className="col-12">
