@@ -18,6 +18,7 @@ const Product:React.FC = ()=>{
     const [products, setProducts]=useState<Product[]>([]);
     const [loadModalState, setLoadModalState]=useState<boolean>(false);
     const [viewModalState, setViewModalState]=useState<boolean>(false);
+    const [searchText,setSearchText] = useState("");
 
     const [image, setImage]=useState<File | null>(null);
     const [name,setName]=useState('');
@@ -43,7 +44,7 @@ const Product:React.FC = ()=>{
 
     useEffect(()=>{
         findAllProducts();
-    }, [])
+    }, [searchText]);
 
     const updateProduct= async ()=>{
         try{ 
@@ -55,7 +56,7 @@ const Product:React.FC = ()=>{
             unitPrice:updateUnitPrice
             
         });
-        setModalState(false);
+        setLoadModalState(false);
         findAllProducts();
 
     }catch (e){
@@ -98,7 +99,16 @@ const Product:React.FC = ()=>{
         setViewModalState(true);
     }
 
- 
+    const searchProduct = async (event: { preventDefault: () => void; }) => {
+        event.preventDefault();
+        try {
+            const response = await AxiosInstance.get(`/products/find-all?searchText=${searchText}&page=1&size=10`);
+            setProducts(response.data);
+        } catch (error) {
+            console.error('Error searching customers:', error);
+    }
+}
+
 
     const saveProduct=async ()=>{
         let imageUrl='https://cdn.4imprint.com/qtz/homepage/categories/images21/drinkware0222.jpg';
@@ -178,14 +188,10 @@ return (
              </div>
          </div>
          <hr/><br />
-         <div className="row">
-             <div className="col-12">
-                 <form className='col-12'>
-                     <input type="search" className='form-control' placeholder='Search Products here'/>
-                 </form>
-             </div>
-         </div>
-         <br/>
+         <form className="d-flex" role="search" onSubmit={searchProduct}>
+                <input className="form-control me-2"  placeholder="Search Product here" value={ searchText } onChange={(e) => setSearchText(e.target.value)} type="search" aria-label="Search"/>
+                <button className="btn btn-outline-success" type="submit">Search</button>
+        </form><br />
          <div className="row">
              <div className="col-12">
 
