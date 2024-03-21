@@ -35,7 +35,7 @@ const Order:React.FC = ()=>{
     const [salary,setSalary]=useState<number | ''>('');
 
     const [selectedCustomer,setSelectedCustomer] = useState<Customer | null>(null);
-    const [selectedProduct,setSelectedProduct] = useState<Product | null>(null);
+    const [selectedProduct,setSelectedProduct] = useState<Product>(null);
 
     const [name,setName]=useState('');
     const [userQty,setUserQty]=useState<number>(0);
@@ -80,6 +80,17 @@ const Order:React.FC = ()=>{
     const addToCart= async (newItem:Cart)=>{
         setCart((prevState)=>[...prevState,newItem]);
     }
+
+    useEffect(() => {
+        // Calculate net total whenever cart changes
+        const calculateTotal = () => {
+            const total = cart.reduce((accumulator, item) => accumulator + (item.total ?? 0), 0);
+            setNetTotal(total);
+        };
+    
+        calculateTotal();
+    }, [cart]);
+    
 
     return (
         <>
@@ -224,14 +235,14 @@ const Order:React.FC = ()=>{
                         <div className="bottom-context" style={bottomContext}>
                             <div className="total-outer">
                                 <h1 style={totalText}>
-                                    Total : {netTotal}
+                                    Total :{netTotal}
                                 </h1>
                             </div>
                             <div className="place-order-button-context">
                                 <button className='btn btn-success'onClick={async ()=>{await AxiosInstance.post('/orders/create/',{
                                     date:new Date(),
                                     customerDetails:selectedCustomer,
-                                    totalCost:130,
+                                    totalCost:100,
                                     products:cart
                                     });
                                     }}>Place Order</button>
